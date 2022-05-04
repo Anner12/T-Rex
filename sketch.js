@@ -34,7 +34,7 @@ function draw(){
   }
   ground.velocityX = -2;
   
-  // impedir que o chão acabe
+  // impedir que o chï¿½o acabe
   if (ground.x < 0) {
     ground.x = ground.width / 2;
   }
@@ -44,16 +44,18 @@ function draw(){
   trex.collide(invisibleGround);
 
   createClouds();
-
+  
   drawSprites();
 }
 
-function createClouds()
+function createClouds()  
 {
-
-  var randNumber = Math.round(random(10, 60));
-
-  console.log(randNumber);
-
-  cloud = createSprite(50, 100, 40, 10);
+   if (frameCount % 60 === 0) {
+    var randNumber = Math.round(random(10, 60));
+     cloud = createSprite(600, 100, 40, 10);
+     cloud.addImage(cloudImg);
+     cloud.velocityX = -3;
+     cloud.scale = 0.5;
+     cloud.y = randNumber;
+   }
 }
