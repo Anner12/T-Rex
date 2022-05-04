@@ -1,11 +1,12 @@
 
 var trex, trex_running;
-var edges;
-var ground, groundImg;
+var ground, groundImg, invisibleGround;
+var cloud, cloudImg;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
   groundImg = loadImage("ground2.png");
+  cloudImg = loadImage("cloud.png");
 }
 
 function setup(){
@@ -14,25 +15,45 @@ function setup(){
   //create a trex sprite
   trex = createSprite(50, 160, 20, 50);
   trex.addAnimation("running", trex_running);
-  edges = createEdgeSprites();
 
   // alterar tamanho e posicao do trex
   trex.scale = 0.5;
   trex.x = 50;
   ground = createSprite(200, 180, 400, 20);
-  ground.addImage(groundImg); 
+  ground.addImage(groundImg);
+
+  invisibleGround = createSprite(200, 190, 400, 10);
+  invisibleGround.visible = false;
 }
 
 function draw(){
   background("black");
 
-  if (keyDown("space")) {
-    trex.velocityY = -10;
+  if ( keyDown("space") && trex.y >= 150) {
+    trex.velocityY = -10;  
   }
   ground.velocityX = -2;
+  
+  // impedir que o chão acabe
+  if (ground.x < 0) {
+    ground.x = ground.width / 2;
+  }
 
+  // impedir que o trex caia saindo da tela
   trex.velocityY = trex.velocityY + 0.5;
-  trex.collide(ground);
+  trex.collide(invisibleGround);
+
+  createClouds();
 
   drawSprites();
+}
+
+function createClouds()
+{
+
+  var randNumber = Math.round(random(10, 60));
+
+  console.log(randNumber);
+
+  cloud = createSprite(50, 100, 40, 10);
 }
