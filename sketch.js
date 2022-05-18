@@ -1,4 +1,4 @@
-// Variável Global
+// Variï¿½vel Global
 var trex, trex_running;
 var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
@@ -41,7 +41,7 @@ function draw(){
   }
   ground.velocityX = -2;
   
-  // impedir que o chão acabe
+  // impedir que o chï¿½o acabe
   if (ground.x < 0) {
     ground.x = ground.width / 2;
   }
@@ -75,9 +75,30 @@ function createCactus()
     var cacto = createSprite(400, 165, 10, 40);
     cacto.velocityX = -6;
     cacto.scale = 0.5;
-    cacto.addImage(cacto1);
 
     var randNumber = Math.round(random(1, 6));
+
+    switch (randNumber) {
+      case 1: 
+        cacto.addImage(cacto1);
+        break;
+      case 2: 
+        cacto.addImage(cacto2);
+        break;
+      case 3: 
+        cacto.addImage(cacto3);
+        break;
+      case 4: 
+        cacto.addImage(cacto4);
+        break;
+      case 5: 
+        cacto.addImage(cacto5);
+        break;
+      case 6: 
+        cacto.addImage(cacto6);
+        break;
+    
+    }
   }
 
 }
