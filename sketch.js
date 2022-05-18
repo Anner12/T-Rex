@@ -1,12 +1,19 @@
-
+// Variável Global
 var trex, trex_running;
 var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
+var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
   groundImg = loadImage("ground2.png");
   cloudImg = loadImage("cloud.png");
+  cacto1 = loadImage("obstacle1.png");
+  cacto2 = loadImage("obstacle2.png");
+  cacto3 = loadImage("obstacle3.png");
+  cacto4 = loadImage("obstacle4.png");
+  cacto5 = loadImage("obstacle5.png");
+  cacto6 = loadImage("obstacle6.png");
 }
 
 function setup(){
@@ -34,7 +41,7 @@ function draw(){
   }
   ground.velocityX = -2;
   
-  // impedir que o chï¿½o acabe
+  // impedir que o chão acabe
   if (ground.x < 0) {
     ground.x = ground.width / 2;
   }
@@ -44,6 +51,7 @@ function draw(){
   trex.collide(invisibleGround);
 
   createClouds();
+  createCactus();
   
   drawSprites();
 }
@@ -57,5 +65,19 @@ function createClouds()
      cloud.velocityX = -3;
      cloud.scale = 0.5;
      cloud.y = randNumber;
+     cloud.lifetime = 200;
    }
+}
+
+function createCactus()
+{
+  if (frameCount % 60 === 0) {
+    var cacto = createSprite(400, 165, 10, 40);
+    cacto.velocityX = -6;
+    cacto.scale = 0.5;
+    cacto.addImage(cacto1);
+
+    var randNumber = Math.round(random(1, 6));
+  }
+
 }
