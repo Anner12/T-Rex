@@ -1,8 +1,12 @@
-// Variï¿½vel Global
+// Variável Global
 var trex, trex_running;
 var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
 var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
+var cloudGroup, cactusGroup;
+const PLAY = 1;
+const END = 0;
+var gameState = PLAY;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -31,14 +35,23 @@ function setup(){
 
   invisibleGround = createSprite(200, 190, 400, 10);
   invisibleGround.visible = false;
+
+  cloudGroup = new Group();
+  cactusGroup = new Group();
 }
 
 function draw(){
   background("black");
 
-  if ( keyDown("space") && trex.y >= 150) {
-    trex.velocityY = -10;  
+  if (gameState == PLAY) {
+    if ( keyDown("space") && trex.y >= 150) {
+      trex.velocityY = -10;  
+    }
+
+  } else if (gameState == END) {
+
   }
+
   ground.velocityX = -2;
   
   // impedir que o chï¿½o acabe
@@ -66,6 +79,8 @@ function createClouds()
      cloud.scale = 0.5;
      cloud.y = randNumber;
      cloud.lifetime = 200;
+
+     cloudGroup.add(cloud);
    }
 }
 
@@ -98,6 +113,7 @@ function createCactus()
         cacto.addImage(cacto6);
         break;
     
+      cactusGroup.add(cacto);
     }
   }
 
