@@ -43,28 +43,33 @@ function setup(){
 function draw(){
   background("black");
 
-  if (gameState == PLAY) {
+  if (gameState === PLAY) {
     if ( keyDown("space") && trex.y >= 150) {
       trex.velocityY = -10;  
     }
-
-  } else if (gameState == END) {
-
-  }
-
-  ground.velocityX = -2;
+    ground.velocityX = -2;
+    
+    // impedir que o ch�o acabe
+    if (ground.x < 0) {
+      ground.x = ground.width / 2;
+    }
   
-  // impedir que o ch�o acabe
-  if (ground.x < 0) {
-    ground.x = ground.width / 2;
+    // impedir que o trex caia saindo da tela
+    trex.velocityY = trex.velocityY + 0.5;
+    trex.collide(invisibleGround);
+  
+    createClouds();
+    createCactus();
+    
+    if (cactusGroup.isTouching(trex)) {
+       gameState = END;
+       console.log("Aqui");
+    }
+
+  } else if (gameState === END) {
+    ground.velocityX = 0;
   }
 
-  // impedir que o trex caia saindo da tela
-  trex.velocityY = trex.velocityY + 0.5;
-  trex.collide(invisibleGround);
-
-  createClouds();
-  createCactus();
   
   drawSprites();
 }
