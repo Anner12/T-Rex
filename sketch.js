@@ -7,6 +7,7 @@ var cloudGroup, cactusGroup;
 const PLAY = 1;
 const END = 0;
 var gameState = PLAY;
+var score = 0;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
@@ -26,6 +27,10 @@ function setup(){
   //create a trex sprite
   trex = createSprite(50, 160, 20, 50);
   trex.addAnimation("running", trex_running);
+  trex.setCollider("circle", 0, 0, 40);
+
+  // para depurar o código
+  // trex.debug = true;
 
   // alterar tamanho e posicao do trex
   trex.scale = 0.5;
@@ -42,6 +47,7 @@ function setup(){
 
 function draw(){
   background("black");
+  text("Score: " + score, 500, 50);
 
   if (gameState === PLAY) {
     if ( keyDown("space") && trex.y >= 150) {
@@ -49,27 +55,29 @@ function draw(){
     }
     ground.velocityX = -2;
     
-    // impedir que o chï¿½o acabe
+    // impedir que o chao acabe
     if (ground.x < 0) {
       ground.x = ground.width / 2;
     }
   
     // impedir que o trex caia saindo da tela
     trex.velocityY = trex.velocityY + 0.5;
-    trex.collide(invisibleGround);
   
     createClouds();
     createCactus();
     
     if (cactusGroup.isTouching(trex)) {
        gameState = END;
-       console.log("Aqui");
     }
 
   } else if (gameState === END) {
     ground.velocityX = 0;
+
+    cactusGroup.setVelocityXEach(0);
+    cloudGroup.setVelocityXEach(0);
   }
 
+  trex.collide(invisibleGround);
   
   drawSprites();
 }
@@ -117,9 +125,8 @@ function createCactus()
       case 6: 
         cacto.addImage(cacto6);
         break;
-    
+      }
       cactusGroup.add(cacto);
-    }
   }
 
 }
