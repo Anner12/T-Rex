@@ -1,5 +1,5 @@
 // Variável Global
-var trex, trex_running;
+var trex, trex_running, trex_collided;
 var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
 var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
@@ -11,6 +11,7 @@ var score = 0;
 
 function preload(){
   trex_running = loadAnimation("trex1.png", "trex3.png", "trex4.png");
+  trex_collided = loadAnimation("trex_collided.png");
   groundImg = loadImage("ground2.png");
   cloudImg = loadImage("cloud.png");
   cacto1 = loadImage("obstacle1.png");
@@ -27,6 +28,7 @@ function setup(){
   //create a trex sprite
   trex = createSprite(50, 160, 20, 50);
   trex.addAnimation("running", trex_running);
+  trex.addAnimation("collided", trex_collided);
   trex.setCollider("circle", 0, 0, 40);
 
   // para depurar o código
@@ -47,12 +49,14 @@ function setup(){
 
 function draw(){
   background("black");
+  fill("orange");
   text("Score: " + score, 500, 50);
 
   if (gameState === PLAY) {
     if ( keyDown("space") && trex.y >= 150) {
       trex.velocityY = -10;  
     }
+    trex.changeAnimation("running");
     ground.velocityX = -2;
     
     // impedir que o chao acabe
@@ -72,7 +76,10 @@ function draw(){
 
   } else if (gameState === END) {
     ground.velocityX = 0;
-
+    trex.changeAnimation("collided");
+    
+    cloudGroup.setLifetimeEach(-1);
+    cactusGroup.setLifetimeEach(-1);
     cactusGroup.setVelocityXEach(0);
     cloudGroup.setVelocityXEach(0);
   }
@@ -100,10 +107,10 @@ function createClouds()
 function createCactus()
 {
   if (frameCount % 60 === 0) {
-    var cacto = createSprite(400, 165, 10, 40);
+    var cacto = createSprite(600, 165, 10, 40);
     cacto.velocityX = -6;
     cacto.scale = 0.5;
-
+    cacto.lifetime = 150;
     var randNumber = Math.round(random(1, 6));
 
     switch (randNumber) {
