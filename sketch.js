@@ -4,6 +4,7 @@ var ground, groundImg, invisibleGround;
 var cloud, cloudImg;
 var cacto1, cacto2, cacto3, cacto4, cacto5, cacto6;
 var cloudGroup, cactusGroup;
+var restart, restartImg, gameOver, gameOverImg;
 const PLAY = 1;
 const END = 0;
 var gameState = PLAY;
@@ -20,6 +21,9 @@ function preload(){
   cacto4 = loadImage("obstacle4.png");
   cacto5 = loadImage("obstacle5.png");
   cacto6 = loadImage("obstacle6.png");
+
+  restartImg = loadImage("restart.png");
+  gameOverImg = loadImage("gameOver.png");
 }
 
 function setup(){
@@ -45,6 +49,16 @@ function setup(){
 
   cloudGroup = new Group();
   cactusGroup = new Group();
+
+  gameOver = createSprite(300, 100);
+  gameOver.addImage(gameOverImg);
+  gameOver.scale = 1;
+  gameOver.visible = false;
+  
+  restart = createSprite(300, 100);
+  restart.addImage(restartImg);
+  restart.scale = 0.5;
+  restart.visible = false;
 }
 
 function draw(){
@@ -75,6 +89,7 @@ function draw(){
     }
 
   } else if (gameState === END) {
+    // game over
     ground.velocityX = 0;
     trex.changeAnimation("collided");
     
@@ -82,11 +97,22 @@ function draw(){
     cactusGroup.setLifetimeEach(-1);
     cactusGroup.setVelocityXEach(0);
     cloudGroup.setVelocityXEach(0);
+
+    restart.visible = true;
+    gameOver.visible = true;
+    if (mousePressedOver(restart)) {
+      reset();
+    }
   }
 
   trex.collide(invisibleGround);
   
   drawSprites();
+}
+
+function reset()
+{
+  
 }
 
 function createClouds()  
