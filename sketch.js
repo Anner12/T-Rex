@@ -53,12 +53,10 @@ function setup(){
   gameOver = createSprite(300, 100);
   gameOver.addImage(gameOverImg);
   gameOver.scale = 1;
-  gameOver.visible = false;
   
   restart = createSprite(300, 100);
   restart.addImage(restartImg);
   restart.scale = 0.5;
-  restart.visible = false;
 }
 
 function draw(){
@@ -67,11 +65,15 @@ function draw(){
   text("Score: " + score, 500, 50);
 
   if (gameState === PLAY) {
+    score += Math.round(getFrameRate()/60);
     if ( keyDown("space") && trex.y >= 150) {
       trex.velocityY = -10;  
     }
     trex.changeAnimation("running");
     ground.velocityX = -2;
+
+    restart.visible = false;
+    gameOver.visible = false;
     
     // impedir que o chao acabe
     if (ground.x < 0) {
@@ -86,6 +88,7 @@ function draw(){
     
     if (cactusGroup.isTouching(trex)) {
        gameState = END;
+
     }
 
   } else if (gameState === END) {
@@ -112,8 +115,11 @@ function draw(){
 
 function reset()
 {
-  
-}
+  gameState = PLAY;
+  cactusGroup.destroyEach();
+  cloudGroup.destroyEach();
+  score = 0;
+ }
 
 function createClouds()  
 {
